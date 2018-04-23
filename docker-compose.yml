@@ -5,14 +5,13 @@ services:
     restart: always
     mem_limit: 48m
     environment:
-      #LOG_LEVEL: 'debug'
+      LOG_LEVEL: 'debug'
       FLUENTD_HOST: 'upstreamfluentd'
       FLUENTD_PORT: '24224'
       SLEEP_DURATION: '8'
       JSON_MODE: 'string'
       MESSAGE_KEY: 'message'
-      #MESSAGE: '{{"app_id":"test.heartbeat", "ts": "{unixs}", "tms":"{unixms}"}}'
-      MESSAGE: '{{"app_id":"test.heartbeat", "ts": "{unixs}"}}'
+      MESSAGE: '{{"app_id":"test.heartbeat", "ts": "{unixs}", "tms":"{unixms}"}}'
     build: "."
     logging:
       driver: json-file

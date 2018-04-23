@@ -5,8 +5,6 @@ import time
 import json
 import random
 from fluent import sender
-from pprint import pformat as pf
-from pprint import pprint as pp
 
 
 log_level = str(os.getenv('LOG_LEVEL', 'INFO')).upper()
@@ -77,7 +75,7 @@ def this_version_string():
 
 
 def do_sleep(t):
-    st = random.randint(int(t * 0.6), int(t * 1.4))
+    st = random.randint(int(t * 0.8), int(t * 1.2))
     log.debug('Sleeping for {0} seconds'.format(st))
     time.sleep(st)
     log.debug('Now awake (slept {0})'.format(st))
@@ -103,13 +101,14 @@ def send_message():
         out = message.format(unixs=int(time.time()), unixms=int(time.time() * 1000))
     fluent = sender.FluentSender(fluentd_tag, host=fluentd_host,
                                  port=fluentd_port,
-                                 timeout=2.0,
+                                 timeout=1.0,
                                  verbose=False,
                                  nanosecond_precision=True,
                                  )
     if not fluent.emit(None, ({message_key: out} if message_key else out)):
         print(fluent.last_error)
         fluent.clear_last_error()
+    fluent.close()
 
 
 if __name__ == '__main__':
