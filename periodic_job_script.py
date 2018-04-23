@@ -39,7 +39,7 @@ message_key = str(
 message = str(
     os.getenv(
         'MESSAGE',
-        '{ }'))
+        '{{ }}'))
 
 if json_mode == 'string':
     json_mode = 'string'
