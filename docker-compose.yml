@@ -1,0 +1,33 @@
+version: '2.2'
+services:
+
+  python-fluentd-heartbeat:
+    restart: always
+    mem_limit: 48m
+    environment:
+      #LOG_LEVEL: 'debug'
+      FLUENTD_HOST: 'upstreamfluentd'
+      FLUENTD_PORT: '24224'
+      SLEEP_DURATION: '8'
+      JSON_MODE: 'string'
+      MESSAGE_KEY: 'message'
+      #MESSAGE: '{{"app_id":"test.heartbeat", "ts": "{unixs}", "tms":"{unixms}"}}'
+      MESSAGE: '{{"app_id":"test.heartbeat", "ts": "{unixs}"}}'
+    build: "."
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: '1'
+
+  upstreamfluentd:
+    restart: always
+    mem_limit: 48m
+    build: ./upstream_fluentd_for_test
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: '1'
+
+
